@@ -4,7 +4,7 @@ function ContactsList({ filtered, handleDelete }) {
   return (
     <ul>
       {filtered.map(({ id, name, number }) => (
-        <ContactsItem key={id} id={id} name={name} number={number} handleDelete={handleDelete}/>
+        <ContactsItem key={id} id={id} name={name} number={number}/>
       ))}
     </ul>
   );

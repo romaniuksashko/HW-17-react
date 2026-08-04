@@ -1,6 +1,12 @@
 import style from "./ContactItem.module.css"
 
-function ContactsItem({ id, name, number, handleDelete }) {
+import { useContext } from "react";
+import { DeletingContext } from "../../context/DeletingContext";
+
+function ContactsItem({ id, name, number }) {
+  const handleDelete = useContext(DeletingContext);
+  
+
   return (
     <li key={id}>
       <p className={style.contact}>

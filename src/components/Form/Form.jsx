@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { nanoid } from "nanoid";
 
 import style from "./Form.module.css";
@@ -6,6 +6,13 @@ import style from "./Form.module.css";
 function Form({contacts, setContacts}) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+
+  const focused = useRef(null);
+
+  useEffect(() => {
+    focused.current.focus()
+  }, [])
+  
 
   const handleUserName = (event) => {
     setName(event.target.value);
@@ -42,6 +49,7 @@ function Form({contacts, setContacts}) {
         Name:
       </label>
       <input
+        ref={focused}
         type="text"
         id="name"
         name="name"
@@ -49,6 +57,7 @@ function Form({contacts, setContacts}) {
         required
         value={name}
         onChange={handleUserName}
+        // onBlur={activateInput}
         placeholder="Enter name"
         className={style.input}
       />

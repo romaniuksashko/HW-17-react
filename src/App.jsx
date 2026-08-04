@@ -5,6 +5,9 @@ import ContactsList from "./components/ContactsList/ContactsList"
 import Form from "./components/Form/Form";
 import Filter from "./components/Filter/Filter";
 
+import { DeletingContext } from "./context/DeletingContext";
+
+
 function App() {
   const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem("contacts")) || []);
   const [filter, setFilter] = useState("");
@@ -31,7 +34,7 @@ function App() {
   }
 
   return (
-    <>
+    <DeletingContext.Provider value={handleDelete}>
       <h1>Phonebook</h1>
       <Form contacts={contacts} setContacts={setContacts} />
 
@@ -39,7 +42,7 @@ function App() {
       <Filter filter={filter} handleFilter={handleFilter} />
 
       <ContactsList filtered={filtered} handleDelete={handleDelete} />
-    </>
+    </DeletingContext.Provider>
   );
 }
 
