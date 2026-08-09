@@ -5,7 +5,6 @@ import { DeletingContext } from "../../context/DeletingContext";
 
 function ContactsItem({ id, name, number }) {
   const handleDelete = useContext(DeletingContext);
-  
 
   return (
     <li key={id}>

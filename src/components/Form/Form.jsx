@@ -1,46 +1,60 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useReducer } from "react"
 import { nanoid } from "nanoid";
 
 import style from "./Form.module.css";
 
-function Form({contacts, setContacts}) {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+const initialState = {
+  name: "",
+  number: ""
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_NAME":
+      return { ...state, name: action.payload };
+    case "SET_NUMBER":
+      return { ...state, number: action.payload };
+    default:
+      return state;
+  }
+}
+
+function Form({ contacts, сontactsDispatch }) {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const focused = useRef(null);
 
   useEffect(() => {
-    focused.current.focus()
-  }, [])
-  
+    focused.current.focus();
+  }, []);
 
   const handleUserName = (event) => {
-    setName(event.target.value);
+    dispatch({ type: "SET_NAME", payload: event.target.value });
   };
 
   const handleUserNumber = (event) => {
-    setNumber(event.target.value);
+    dispatch({ type: "SET_NUMBER", payload: event.target.value });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const contactExists = contacts.some(
-      (item) => item.name.toLowerCase() === name.toLowerCase(),
+      (item) => item.name.toLowerCase() === state.name.toLowerCase(),
     );
 
     if (contactExists) {
-      alert(`${name} вже існує`);
+      alert(`${state.name} вже існує`);
       return;
     }
 
     const newUser = {
       id: nanoid(),
-      name: name,
-      number: number,
+      name: state.name,
+      number: state.number,
     };
 
-    setContacts([...contacts, newUser]);
+    сontactsDispatch({ type: "SET_CONTACTS", payload: newUser });
   };
 
   return (
@@ -55,9 +69,8 @@ function Form({contacts, setContacts}) {
         name="name"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         required
-        value={name}
+        value={state.name}
         onChange={handleUserName}
-        // onBlur={activateInput}
         placeholder="Enter name"
         className={style.input}
       />
@@ -70,7 +83,7 @@ function Form({contacts, setContacts}) {
         name="number"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
-        value={number}
+        value={state.number}
         onChange={handleUserNumber}
         placeholder="Enter phone number"
         className={style.input}
